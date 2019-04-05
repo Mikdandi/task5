@@ -1,0 +1,40 @@
+﻿<UserControl  x:Class="task5.View.TaskListView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:task5.View"
+        mc:Ignorable="d"
+         Height="450" Width="800">
+    <Grid>
+
+        <ComboBox  SelectedIndex="{Binding PressedSort,Mode=TwoWay}" x:Name="comboBox"  Height="25" Width="120" Margin="10,110,670,314.6" >
+            <ComboBoxItem>None</ComboBoxItem>
+            <ComboBoxItem>Sort by Name</ComboBoxItem>
+            <ComboBoxItem>Sort by ID</ComboBoxItem>
+            <ComboBoxItem>Sort by Activity</ComboBoxItem>
+            <ComboBoxItem>Sort by CPU</ComboBoxItem>
+            <ComboBoxItem>Sort by RAM%</ComboBoxItem>
+            <ComboBoxItem>Sort by RAM</ComboBoxItem>
+            <ComboBoxItem>Sort by number of flows</ComboBoxItem>
+            <ComboBoxItem>Sort by UserName</ComboBoxItem>
+            <ComboBoxItem>Sort by path</ComboBoxItem>
+        </ComboBox>
+        <Button     Command="{Binding SortCommand}" Content="Sort" Margin="10,140,670,284.6" Height="25" Width="120" ></Button>
+        <DataGrid  SelectedItem="{Binding Selected, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"   AlternatingRowBackground="Aqua" IsReadOnly="True" Grid.Row="0" ItemsSource="{Binding TaskList, Mode=OneWay}" AutoGenerateColumns="False" CanUserSortColumns="False" ScrollViewer.CanContentScroll="True" Height="450" Width="600" RenderTransformOrigin="0.679,0.44" Margin="135,0,65,-0.4" >
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Name of Process" Binding="{Binding NameOfProcess}"></DataGridTextColumn>
+                <DataGridTextColumn Header="ID" Binding="{Binding ID}"></DataGridTextColumn>
+                <DataGridTextColumn Header="Activity of Process" Binding="{Binding ActivityofProcess}"></DataGridTextColumn>
+                <DataGridTextColumn Header="CPU" Binding="{Binding CPU}"></DataGridTextColumn>
+                <DataGridTextColumn Header="RAM%" Binding="{Binding RAM%}"></DataGridTextColumn>
+                <DataGridTextColumn Header="RAM" Binding="{Binding RAM}"></DataGridTextColumn>
+                <DataGridTextColumn Header="Number of Flows" Binding="{Binding NumberOfFlows}"></DataGridTextColumn>
+                <DataGridTextColumn Header="UserName" Binding="{Binding UserName}"></DataGridTextColumn>
+                <DataGridTextColumn Header="Path" Binding="{Binding Path}"></DataGridTextColumn>
+                <DataGridTextColumn Header="Date" Binding="{Binding Date}"></DataGridTextColumn>
+
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+</UserControl>
