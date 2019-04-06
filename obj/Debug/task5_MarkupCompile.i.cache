@@ -10,11 +10,11 @@ none
 false
 DEBUG;TRACE
 D:\C#\task5\task5\App.xaml
-2156422816
+4-1701121541
 
-251929172451
+30-1170035979
 15-1170494526
-MainWindow.xaml;View\TaskListView.xaml;
+MainWindow.xaml;View\ModuleView.xaml;View\TaskListView.xaml;View\ThreadView.xaml;
 
 True
 

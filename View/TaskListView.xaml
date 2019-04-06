@@ -8,9 +8,9 @@
          Height="450" Width="800">
     <Grid>
 
-        <ComboBox  SelectedIndex="{Binding PressedSort,Mode=TwoWay}" x:Name="comboBox"  Height="25" Width="120" Margin="10,110,670,314.6" >
-            <ComboBoxItem>None</ComboBoxItem>
-            <ComboBoxItem>Sort by Name</ComboBoxItem>
+        <ComboBox  Text="{Binding SelectedSort}" x:Name="comboBox"  Height="25" Width="120" Margin="10,110,670,314.6" >
+            <ComboBoxItem >None</ComboBoxItem>
+            <ComboBoxItem >Sort by Name</ComboBoxItem>
             <ComboBoxItem>Sort by ID</ComboBoxItem>
             <ComboBoxItem>Sort by Activity</ComboBoxItem>
             <ComboBoxItem>Sort by CPU</ComboBoxItem>
@@ -19,9 +19,10 @@
             <ComboBoxItem>Sort by number of flows</ComboBoxItem>
             <ComboBoxItem>Sort by UserName</ComboBoxItem>
             <ComboBoxItem>Sort by path</ComboBoxItem>
+            <ComboBoxItem>Sort by date</ComboBoxItem>
         </ComboBox>
         <Button     Command="{Binding SortCommand}" Content="Sort" Margin="10,140,670,284.6" Height="25" Width="120" ></Button>
-        <DataGrid  SelectedItem="{Binding Selected, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"   AlternatingRowBackground="Aqua" IsReadOnly="True" Grid.Row="0" ItemsSource="{Binding TaskList, Mode=OneWay}" AutoGenerateColumns="False" CanUserSortColumns="False" ScrollViewer.CanContentScroll="True" Height="450" Width="600" RenderTransformOrigin="0.679,0.44" Margin="135,0,65,-0.4" >
+        <DataGrid  SelectedItem="{Binding Selected, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"   AlternatingRowBackground="Aqua" IsReadOnly="True" Grid.Row="0" ItemsSource="{Binding TaskList, Mode=OneWay}" AutoGenerateColumns="False" CanUserSortColumns="False" ScrollViewer.CanContentScroll="True" Height="350" Width="600" RenderTransformOrigin="0.679,0.44" Margin="135,0,65,-0.4" >
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Name of Process" Binding="{Binding NameOfProcess}"></DataGridTextColumn>
                 <DataGridTextColumn Header="ID" Binding="{Binding ID}"></DataGridTextColumn>
@@ -35,6 +36,14 @@
                 <DataGridTextColumn Header="Date" Binding="{Binding Date}"></DataGridTextColumn>
 
             </DataGrid.Columns>
+            <DataGrid.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Show Threads" Command="{Binding ShowThreadsCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=Parent}"/>
+                    <MenuItem Header="Show modules" Command="{Binding ShowModulesCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=Parent}" />
+                    <MenuItem Header="Open folder" Command="{Binding OpenFolderCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=Parent}"/>
+                  
+                </ContextMenu>
+            </DataGrid.ContextMenu>
         </DataGrid>
     </Grid>
 </UserControl>

@@ -71,9 +71,18 @@
     <Compile Include="Tools\Navigation\INavigatable.cs" />
     <Compile Include="Tools\Navigation\InitializationNavigationModel.cs" />
     <Compile Include="Tools\Navigation\NavigationModel.cs" />
+    <Compile Include="Tools\RelayCommand.cs" />
+    <Compile Include="ViewModel\ModuleViewModel.cs" />
+    <Compile Include="ViewModel\ThreadViewModel.cs" />
+    <Compile Include="View\ModuleView.xaml.cs">
+      <DependentUpon>ModuleView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ViewModel\TaskListViewModel.cs" />
     <Compile Include="View\TaskListView.xaml.cs">
       <DependentUpon>TaskListView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ThreadView.xaml.cs">
+      <DependentUpon>ThreadView.xaml</DependentUpon>
     </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -87,7 +96,15 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="View\ModuleView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\TaskListView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\ThreadView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

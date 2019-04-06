@@ -1,15 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace task5.Model
 {
     internal class Task
     {
-
         #region fields
+
+
         private string _nameOfProcess;
         private double _id;
         private bool _activityOfProcess;
@@ -20,11 +18,14 @@ namespace task5.Model
         private string _userName;
         private string _path;
         private string _dateTime;
+
+
+
+
         #endregion
 
-
-
         #region properties
+     
         public string NameOfProcess
         {
             get { return _nameOfProcess; }
@@ -115,6 +116,10 @@ namespace task5.Model
 
         #endregion
 
+
+
+
+
         internal Task(string nameOfProcess, double id, bool activityOfProcess, double cpu, double ramPersent, double ram, int numberOfFlows, string userName, string path, string dateTime)
         {
             _nameOfProcess = nameOfProcess;
@@ -127,6 +132,6 @@ namespace task5.Model
             _path = path;
             _dateTime = dateTime == default(DateTime).ToShortDateString() ? "-" : dateTime;
         }
-     
+       
     }
 }

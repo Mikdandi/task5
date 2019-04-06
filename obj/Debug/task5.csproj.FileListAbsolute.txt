@@ -15,3 +15,7 @@ D:\C#\task5\task5\obj\Debug\task5.exe
 D:\C#\task5\task5\obj\Debug\task5.pdb
 D:\C#\task5\task5\obj\Debug\View\TaskListView.g.cs
 D:\C#\task5\task5\obj\Debug\View\TaskListView.baml
+D:\C#\task5\task5\obj\Debug\View\ModuleView.g.cs
+D:\C#\task5\task5\obj\Debug\View\ThreadView.g.cs
+D:\C#\task5\task5\obj\Debug\View\ModuleView.baml
+D:\C#\task5\task5\obj\Debug\View\ThreadView.baml

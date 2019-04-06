@@ -5,7 +5,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using task5.Model;
 using task5.Tools;
-using BackgroundTask = System.Threading.Tasks.Task;
+using  InsideTask = System.Threading.Tasks.Task;
 using task5.Tools.Manager;
 using task5.Tools.Loader;
 using System.Threading;
@@ -19,26 +19,19 @@ namespace task5.ViewModel
         #region fields
 
         private ObservableCollection<Task> _taskList;
-        private BackgroundTask _backgroundTask;
+        private InsideTask _insideTask;
         private CancellationToken _token;
         private CancellationTokenSource _tokenSource;
 
     
-        private bool _nameSort;
-        private int _selectedSort;
-        private bool _idSort;
-        private bool _activeSort;
-        private bool _cpuSort;
-        private bool _ramPercentSort;
-        private bool _ramVolumeSort;
-        private bool _threadsNumSort;
-        private bool _taskSort;
-        private bool _startDateSort;
+      
+        private string _selectedSort;
+    
 
         private bool _pressedSort;
 
         private Task _selected;
-
+        private RelayCommand<object> _sortCommand;
 
 
         #endregion
@@ -59,145 +52,17 @@ namespace task5.ViewModel
             }
         }
 
-    
-
-        public bool NameSort
+        public bool PressedSort
         {
             get
             {
-                return _nameSort;
+                return _pressedSort;
             }
 
             set
             {
-                _nameSort = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public int SelectedSort
-        {
-            get
-            {
-                return _selectedSort;
-            }
-
-            set
-            {
-                _selectedSort = value;
+                _pressedSort = value;
               //  GetSorted(tasks);
-                OnPropertyChanged();
-            }
-        }
-
-        public bool IdSort
-        {
-            get
-            {
-                return _idSort;
-            }
-
-            set
-            {
-                _idSort = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public bool ActiveSort
-        {
-            get
-            {
-                return _activeSort;
-            }
-
-            set
-            {
-                _activeSort = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public bool CpuSort
-        {
-            get
-            {
-                return _cpuSort;
-            }
-
-            set
-            {
-                _cpuSort = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public bool RamPercentSort
-        {
-            get
-            {
-                return _ramPercentSort;
-            }
-
-            set
-            {
-                _ramPercentSort = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public bool RamVolumeSort
-        {
-            get
-            {
-                return _ramVolumeSort;
-            }
-
-            set
-            {
-                _ramVolumeSort = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public bool ThreadsNumSort
-        {
-            get
-            {
-                return _threadsNumSort;
-            }
-
-            set
-            {
-                _threadsNumSort = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public bool UserSort
-        {
-            get
-            {
-                return _taskSort;
-            }
-
-            set
-            {
-                _taskSort = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public bool StartDateSort
-        {
-            get
-            {
-                return _startDateSort;
-            }
-
-            set
-            {
-                _startDateSort = value;
                 OnPropertyChanged();
             }
         }
@@ -218,20 +83,21 @@ namespace task5.ViewModel
                 OnPropertyChanged();
             }
         }
-        public bool PressedSort
+
+        public string SelectedSort
         {
             get
             {
-                return _pressedSort;
+                return _selectedSort;
             }
 
             set
             {
-                _pressedSort = value;
+                _selectedSort = value;
+                //  GetSorted(tasks);
                 OnPropertyChanged();
             }
         }
-     
 
         #endregion
 
@@ -247,7 +113,7 @@ namespace task5.ViewModel
 
         private void StartBarckgroundTask()
         {
-            _backgroundTask = BackgroundTask.Factory.StartNew(BackgroundTaskProcess, System.Threading.Tasks.TaskCreationOptions.LongRunning);
+            _insideTask = InsideTask.Factory.StartNew(BackgroundTaskProcess, System.Threading.Tasks.TaskCreationOptions.LongRunning);
         }
 
         private async void BackgroundTaskProcess()
@@ -259,7 +125,7 @@ namespace task5.ViewModel
                 {
                    
                 }
-                await BackgroundTask.Run(() => LoadNewTasks());
+                await InsideTask.Run(() => LoadNewTasks());
                 if (_token.IsCancellationRequested)
                     break;
                 i++;
@@ -270,21 +136,31 @@ namespace task5.ViewModel
         {
             Task selected = _selected;
             var tasks = TaskListLoader.GetCurrentTasksAndCheckForBreak(_token);
-            if (_pressedSort) tasks = GetSorted(tasks);
+            if (_pressedSort)
+            {
+                tasks = GetSorted(tasks);
+            }
             TaskList = new ObservableCollection<Task>(tasks);
             Selected = TaskList.ToList().FirstOrDefault(task => task.Equals(selected));
         }
-
+        public RelayCommand<object> SortCommand
+        {
+            get
+            {
+                return _sortCommand ?? (_sortCommand = new RelayCommand<object>(
+                           Sort));
+            }
+        }
         internal void StopBackgroundTask()
         {
             _tokenSource.Cancel();
-            if (_backgroundTask == null)
+            if (_insideTask == null)
             {
                 return;
             }
-            _backgroundTask.Wait(2000);
-            _backgroundTask.Dispose();
-            _backgroundTask = null;
+            _insideTask.Wait(2000);
+            _insideTask.Dispose();
+            _insideTask = null;
         }
     
         private void Sort(object obj)
@@ -298,38 +174,46 @@ namespace task5.ViewModel
         {
 
             MessageBox.Show("ura");
-            if (SelectedSort==1)
+            if (SelectedSort== "Sort by Name")
             {
                 taskList.Sort((task, task1) => task.NameOfProcess.CompareTo(task1.NameOfProcess));
             }
-            else if (SelectedSort == 2)
+            else if (SelectedSort == "Sort by ID")
             {
                 taskList.Sort((task, task1) => task.ID.CompareTo(task1.ID));
             }
-            else if (SelectedSort == 3)
+            else if (SelectedSort == "Sort by Activity")
             {
                 taskList.Sort((task, task1) => task.ActivityOfProcess.CompareTo(task1.ActivityOfProcess));
             }
-            else if (SelectedSort == 4)
+            else if (SelectedSort == "Sort by CPU ")
             {
                 taskList.Sort((task, task1) => task.CPU.CompareTo(task1.CPU));
             }
-            else if (SelectedSort == 5)
+            else if (SelectedSort == "Sort by RAM% ")
+            {
+                taskList.Sort((task, task1) => task.RAMPersent.CompareTo(task1.RAMPersent));
+            }
+            else if (SelectedSort == "Sort by RAM ")
             {
                 taskList.Sort((task, task1) => task.RAM.CompareTo(task1.RAM));
             }
 
-            else if (SelectedSort == 6)
+            else if (SelectedSort == "Sort by number of flows ")
             {
                 taskList.Sort((task, task1) => task.NumberOfFlows.CompareTo(task1.NumberOfFlows));
             }
-            else if (SelectedSort == 7)
+            else if (SelectedSort == "Sort by UserName ")
             {
                 taskList.Sort((task, task1) => task.UserName.CompareTo(task1.UserName));
             }
-            else if (SelectedSort == 8)
+            else if (SelectedSort == "Sort by date ")
             {
                 taskList.Sort((task, task1) => task.Date.CompareTo(task1.Date));
+            }
+            else if (SelectedSort == "Sort by path ")
+            {
+                taskList.Sort((task, task1) => task.Path.CompareTo(task1.Date));
             }
 
             return taskList;

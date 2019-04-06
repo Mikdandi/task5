@@ -12,15 +12,15 @@ namespace task5.Tools.Loader
 {
     internal static class TaskListLoader
     {
-        internal static List<Task> GetCurrentTasksAndCheckForBreak(CancellationToken cancellationToken)
+        internal static List<Model.Task> GetCurrentTasksAndCheckForBreak(CancellationToken cancellationToken)
         {
-            List<Task> res = new List<Task>();
-            return GetCurrentTasks(Process.GetProcesses(), cancellationToken);
+            List<Model.Task> res = new List<Model.Task>();
+            return GetCurrentTasks(System.Diagnostics.Process.GetProcesses(), cancellationToken);
         }
 
-        private static List<Task> GetCurrentTasks(Process[] processes, CancellationToken cancellationToken)
+        private static List<Model.Task> GetCurrentTasks(System.Diagnostics.Process[] processes, CancellationToken cancellationToken)
         {
-            List<Task> res = new List<Task>();
+            List<Model.Task> res = new List<Model.Task>();
             for (int i = 0; i < processes.Length; i++)
             {
                 res.Add(GetTask(processes[i]));
@@ -32,10 +32,12 @@ namespace task5.Tools.Loader
             return res;
         }
 
-        private static Task GetTask(Process process)
+        private static Task GetTask(System.Diagnostics.Process process)
         {
             double cpuMeasure = TryToGetCpuMeasure(process);
-            double ramMb = TryToGetRamMeasure(process);
+      
+            double ramMb = process.PagedMemorySize64;
+            double ramPercentage = ramMb / (8 * 1024);
             string processOwner = TryToGetProcessOwner(process);
             string path="Path";
             DateTime startDateTime = TryToGetDateTime(process);
@@ -52,14 +54,14 @@ namespace task5.Tools.Loader
 
                 }
             }
-            Task task = new Task(process.ProcessName, process.Id, process.Responding, cpuMeasure,ramMb/(8*1024), ramMb, process.Threads.Count, processOwner,path, startDateTime.ToShortDateString());
+            Model.Task task = new Model.Task(process.ProcessName, process.Id, process.Responding, cpuMeasure, ramPercentage, ramMb, process.Threads.Count, processOwner, path, startDateTime.ToShortDateString());
          
          
             return task;
 
         }
      
-        private static double TryToGetCpuMeasure(Process process)
+        private static double TryToGetCpuMeasure(System.Diagnostics.Process process)
         {
             PerformanceCounter counter = null;
             double res = 0;
@@ -79,28 +81,10 @@ namespace task5.Tools.Loader
             return res;
         }
 
-        private static double TryToGetRamMeasure(Process process)
-        {
-            PerformanceCounter counter = null;
-            double res = 0;
-            try
-            {
-                counter = new PerformanceCounter("Process", "Working Set", process.ProcessName, true);
-                res = counter.NextValue();
-            }
-            catch (Exception)
-            {
-                Console.WriteLine();
-            }
 
-            if (counter != null)
-            {
-                counter.Dispose();
-            }
-            return res;
-        }
+      
 
-        private static string TryToGetProcessOwner(Process process)
+        private static string TryToGetProcessOwner(System.Diagnostics.Process process)
         {
             try
             {
@@ -113,7 +97,7 @@ namespace task5.Tools.Loader
             return " - ";
         }
 
-        private static DateTime TryToGetDateTime(Process process)
+        private static DateTime TryToGetDateTime(System.Diagnostics.Process process)
         {
             try
             {
@@ -128,7 +112,7 @@ namespace task5.Tools.Loader
 
         internal static Process GetProcessById(int processId)
         {
-            return Process.GetProcessById(processId);
+            return System.Diagnostics.Process.GetProcessById(processId);
         }
     }
 }
