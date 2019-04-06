@@ -9,7 +9,7 @@ namespace task5.Tools.Manager
 
         internal static void CloseApp()
         {
-            MessageBox.Show("ShutDown");
+           
             StopThreads?.Invoke();
             Environment.Exit(1);
         }

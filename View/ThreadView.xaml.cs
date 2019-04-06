@@ -1,5 +1,6 @@
 ﻿
 using System.Windows.Controls;
+using task5.Tools.Navigation;
 using task5.ViewModel;
 
 namespace task5.View
@@ -7,12 +8,12 @@ namespace task5.View
     /// <summary>
     /// Логика взаимодействия для ThreadView.xaml
     /// </summary>
-    public partial class ThreadView : UserControl
+    public partial class ThreadView : UserControl, INavigatable
     {
-        internal ThreadView(System.Diagnostics.Process process)
+        internal ThreadView()
         {
             InitializeComponent();
-            DataContext = new ThreadViewModel(process.Threads);
+            DataContext = new ThreadViewModel();
         }
     }
 }

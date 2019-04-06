@@ -34,13 +34,13 @@ namespace task5.Tools.Loader
 
         private static Task GetTask(System.Diagnostics.Process process)
         {
-            double cpuMeasure = TryToGetCpuMeasure(process);
+            double cpuMeasure = CpuMeasure(process);
       
             double ramMb = process.PagedMemorySize64;
             double ramPercentage = ramMb / (8 * 1024);
-            string processOwner = TryToGetProcessOwner(process);
+            string processOwner = ProcessOwner(process);
             string path="Path";
-            DateTime startDateTime = TryToGetDateTime(process);
+            DateTime startDateTime = DateTime(process);
             ManagementObjectCollection processList = new ManagementObjectSearcher("Select * From Win32_Process").Get();
             foreach (ManagementObject obj in processList)
             {
@@ -61,7 +61,7 @@ namespace task5.Tools.Loader
 
         }
      
-        private static double TryToGetCpuMeasure(System.Diagnostics.Process process)
+        private static double CpuMeasure(System.Diagnostics.Process process)
         {
             PerformanceCounter counter = null;
             double res = 0;
@@ -84,7 +84,7 @@ namespace task5.Tools.Loader
 
       
 
-        private static string TryToGetProcessOwner(System.Diagnostics.Process process)
+        private static string ProcessOwner(System.Diagnostics.Process process)
         {
             try
             {
@@ -97,7 +97,7 @@ namespace task5.Tools.Loader
             return " - ";
         }
 
-        private static DateTime TryToGetDateTime(System.Diagnostics.Process process)
+        private static DateTime DateTime(System.Diagnostics.Process process)
         {
             try
             {
@@ -110,7 +110,7 @@ namespace task5.Tools.Loader
             return default(DateTime);
         }
 
-        internal static Process GetProcessById(int processId)
+        internal static Process ProcessById(int processId)
         {
             return System.Diagnostics.Process.GetProcessById(processId);
         }

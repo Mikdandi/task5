@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using task5.Tools;
 
 
 namespace task5.ViewModel
@@ -23,9 +24,9 @@ namespace task5.ViewModel
             }
         }
 
-        internal ThreadViewModel(ProcessThreadCollection threads)
+        internal ThreadViewModel()
         {
-            Threads = new ObservableCollection<ProcessThread>(threads.Cast<ProcessThread>());
+            Threads = new ObservableCollection<ProcessThread>();
 
         }
 
@@ -36,6 +37,5 @@ namespace task5.ViewModel
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
-
     }
 }

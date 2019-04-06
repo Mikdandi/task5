@@ -3,7 +3,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
-
+using task5.Tools;
 
 namespace task5.ViewModel
 {
@@ -23,9 +23,9 @@ namespace task5.ViewModel
         }
 
 
-        internal ModuleViewModel(ProcessModuleCollection modules)
+        internal ModuleViewModel()
         {
-            Modules = new ObservableCollection<ProcessModule>(modules.Cast<ProcessModule>());
+            Modules = new ObservableCollection<ProcessModule>();
         
         }
 
@@ -36,6 +36,8 @@ namespace task5.ViewModel
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
+
 
     }
 }

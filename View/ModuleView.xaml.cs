@@ -1,6 +1,5 @@
 ﻿using System.Windows.Controls;
-using task5.Tools.Navigation;
-using task5.ViewModel;
+
 
 namespace task5.ViewModel
 {
@@ -9,10 +8,10 @@ namespace task5.ViewModel
     /// </summary>
     public partial class ModuleView : UserControl
     {
-        internal ModuleView(System.Diagnostics.Process process)
+        internal ModuleView()
         {
             InitializeComponent();
-            DataContext = new ModuleViewModel(process.Modules);
+            DataContext = new ModuleViewModel();
         }
     }
 }

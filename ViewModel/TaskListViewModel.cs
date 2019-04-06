@@ -1,4 +1,4 @@
-﻿using System;
+﻿
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
@@ -10,6 +10,8 @@ using task5.Tools.Manager;
 using task5.Tools.Loader;
 using System.Threading;
 using System.Windows;
+using task5.View;
+using CSharpPractice5.Tools.Managers;
 using task5.Tools.Navigation;
 
 namespace task5.ViewModel
@@ -32,7 +34,7 @@ namespace task5.ViewModel
 
         private Task _selected;
         private RelayCommand<object> _sortCommand;
-
+        private RelayCommand<object> _openThread;
 
         #endregion
 
@@ -99,6 +101,15 @@ namespace task5.ViewModel
             }
         }
 
+        public RelayCommand<object> ShowThreadsCommand
+        {
+            get
+            {
+                return _openThread ?? (_openThread = new RelayCommand<object>(
+                          OpenThreads  ));
+            }
+        }
+
         #endregion
 
 
@@ -107,16 +118,16 @@ namespace task5.ViewModel
             _tokenSource = new CancellationTokenSource();
             _token = _tokenSource.Token;
             StartBarckgroundTask();
-            StationManager.StopThreads += StopBackgroundTask;
+            StationManager.StopThreads += StopInsideTask;
             TaskListManager.Initialize(this);
         }
 
         private void StartBarckgroundTask()
         {
-            _insideTask = InsideTask.Factory.StartNew(BackgroundTaskProcess, System.Threading.Tasks.TaskCreationOptions.LongRunning);
+            _insideTask = InsideTask.Factory.StartNew(InsideTaskProcess, System.Threading.Tasks.TaskCreationOptions.LongRunning);
         }
 
-        private async void BackgroundTaskProcess()
+        private async void InsideTaskProcess()
         {
             int i = 0;
             while (!_token.IsCancellationRequested)
@@ -151,7 +162,7 @@ namespace task5.ViewModel
                            Sort));
             }
         }
-        internal void StopBackgroundTask()
+        internal void StopInsideTask()
         {
             _tokenSource.Cancel();
             if (_insideTask == null)
@@ -218,7 +229,10 @@ namespace task5.ViewModel
 
             return taskList;
         }
-      
+
+        private void OpenThreads(object obj) {
+            NavigationManager.Instance.Navigate(ViewType.ThreadView);
+        }
 
     }
 }

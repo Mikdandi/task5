@@ -5,8 +5,7 @@ namespace task5.Tools.Navigation
     internal enum ViewType
     {
         TaskManager,
-        //ThreadInfo,
-       // Modules
+        ThreadView
     }
 
     interface INavigationModel
